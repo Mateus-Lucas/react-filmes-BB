@@ -1,26 +1,28 @@
 import Pagina from '@/components/Pagina'
 import apiFilmes from '@/services/apiFilmes'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { Card } from 'react-bootstrap'
+import { Card, Col, Row, Button } from 'react-bootstrap'
 
 const index = (props) => {
     return (
+        
         <Pagina titulo="Filmes">
-            <Card style={{ width: '18rem' }}>
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                    <Card.Text>
-                        Some quick example text to build on the card title and make up the
-                        bulk of the card's content.
-                    </Card.Text>
-                    <Card.Link href="#">Card Link</Card.Link>
-                    <Card.Link href="#">Another Link</Card.Link>
-                </Card.Body>
-            </Card>
-            {props.filmes.map(item => (
-                <p>{item.title}</p>
-            ))}
+            <Row md={4}>
+                {props.filmes.map(item => (
+                    <Col>
+                        <Card>
+                            <Card.Img variant="top" src={"https://image.tmdb.org/t/p/w500" + item.backdrop_path} />
+                            <Card.Body>
+                                <Card.Title>{item.title}</Card.Title>
+                                <p>Lançamento: {item.release_date}</p>
+                                <p>Nota: {item.vote_average}</p>
+                                <Link className="btn btn-primary" href={'/filmes/' + item.id}>Detalhes</Link>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
         </Pagina>
     )
 }
