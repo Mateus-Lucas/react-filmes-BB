@@ -1,25 +1,47 @@
 import Pagina from '@/components/Pagina'
 import apiFilmes from '@/services/apiFilmes'
 import React from 'react'
-import { Button, Card } from 'react-bootstrap'
+import { Card, Col, Row } from 'react-bootstrap'
 
-const Detalhes = ({ filme }) => {
+const Detalhes = ({ filme, atores }) => {
 
     return (
-        <>
-            <Pagina titulo={filme.title}>
-                <Card>
-                    <Card.Header as="h5">Featured</Card.Header>
-                    <Card.Body>
-                        <Card.Title>Special title treatment</Card.Title>
-                        <Card.Text>
-                            With supporting text below as a natural lead-in to additional content.
-                        </Card.Text>
-                        <Button variant="primary">Go somewhere</Button>
-                    </Card.Body>
-                </Card>
-            </Pagina>
-        </>
+
+        <Pagina titulo={filme.title}>
+
+            <Row>
+                <Col md={3}>
+                    <Card.Img variant="top" src={"https://image.tmdb.org/t/p/w500" + filme.poster_path} />
+                </Col>
+
+                <Col md={3} className='text-white'>
+                    <p><strong>Orçamento: </strong>{filme.budget}</p>
+                    <p><strong>Data de Lançamento: </strong>{filme.release_date}</p>
+                    <p><strong>Duração: </strong>{filme.runtime}</p>
+                    <p><strong>Nota: </strong>{filme.vote_avarege}</p>
+                    <div>
+                        <strong>Gêneros: </strong>
+                        <ul>
+                            {filme.genres.map(item => (
+                                <p>{item.name}</p>
+                            ))}
+                        </ul>
+                    </div>
+                    <p>{filme.overview}</p>
+                </Col>
+            </Row>
+
+            <h2>Atores</h2>
+            <Row>
+                    {atores.map(item => (
+                        <Col className='mb-3' md={2}>
+                            <Card.Img title={item.name} variant="top" src={"https://image.tmdb.org/t/p/w500" + item.profile_path} />
+                        </Col>
+                    ))}
+            </Row>
+
+        </Pagina>
+
     )
 }
 
@@ -28,10 +50,14 @@ export default Detalhes
 export async function getServerSideProps(context) {
 
     const id = context.params.id
+
     const resultado = await apiFilmes.get('/movie/' + id)
     const filme = resultado.data
 
+    const res_Atores = await apiFilmes.get('/movie/' + id + '/credits')
+    const atores = res_Atores.data.cast
+
     return {
-        props: { filme }
+        props: { filme, atores },
     }
 }
