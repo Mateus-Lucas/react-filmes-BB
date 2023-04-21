@@ -32,10 +32,10 @@ const Detalhes = ({ filme, atores }) => {
                 </Col>
             </Row>
 
-            <h2>Atores</h2>
+            <h2 className='bg-danger text-white text-center'>Atores</h2>
             <Row>
                 {atores.map(item => (
-                    <Col className='mb-3' md={2}>
+                    <Col className='mb-3' md={2} title={item.name}>
                         <Link href={'/atores/' + item.id}>
                             <Card.Img title={item.name} variant="top" src={"https://image.tmdb.org/t/p/w500" + item.profile_path} />
                         </Link>
@@ -57,7 +57,7 @@ export async function getServerSideProps(context) {
     const resultado = await apiFilmes.get('/movie/' + id)
     const filme = resultado.data
 
-    const res_Atores = await apiFilmes.get('/movie/' + id + '/credits')
+    const res_Atores = await apiFilmes.get('/movie/' + id + '/credits?language=pt-BR')
     const atores = res_Atores.data.cast
 
     return {
