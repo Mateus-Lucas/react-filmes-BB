@@ -1,5 +1,6 @@
 import Pagina from '@/components/Pagina'
 import apiFilmes from '@/services/apiFilmes'
+import Link from 'next/link'
 import React from 'react'
 import { Card, Col, Row } from 'react-bootstrap'
 
@@ -9,15 +10,15 @@ const Detalhes = ({ filme, atores }) => {
 
         <Pagina titulo={filme.title}>
 
-            <Row>
+            <Row className='mb-5'>
                 <Col md={3}>
                     <Card.Img variant="top" src={"https://image.tmdb.org/t/p/w500" + filme.poster_path} />
                 </Col>
 
-                <Col md={3} className='text-white'>
-                    <p><strong>Orçamento: </strong>{filme.budget}</p>
+                <Col md={9} className='text-white'>
+                    <p><strong>Orçamento: </strong>{filme.budget} $</p>
                     <p><strong>Data de Lançamento: </strong>{filme.release_date}</p>
-                    <p><strong>Duração: </strong>{filme.runtime}</p>
+                    <p><strong>Duração: </strong>{filme.runtime} minutos</p>
                     <p><strong>Nota: </strong>{filme.vote_avarege}</p>
                     <div>
                         <strong>Gêneros: </strong>
@@ -33,11 +34,13 @@ const Detalhes = ({ filme, atores }) => {
 
             <h2>Atores</h2>
             <Row>
-                    {atores.map(item => (
-                        <Col className='mb-3' md={2}>
+                {atores.map(item => (
+                    <Col className='mb-3' md={2}>
+                        <Link href={'/atores/' + item.id}>
                             <Card.Img title={item.name} variant="top" src={"https://image.tmdb.org/t/p/w500" + item.profile_path} />
-                        </Col>
-                    ))}
+                        </Link>
+                    </Col>
+                ))}
             </Row>
 
         </Pagina>
